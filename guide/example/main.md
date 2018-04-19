@@ -1,6 +1,6 @@
 ## 用实例入门Kotlinx.couroutines
 
-只是一个带有一系列实例的，讲解kotlinx.coroutines核心特性的入门指南
+这是一个带有一系列实例的，讲解kotlinx.coroutines核心特性的入门指南
 
 #### 介绍和设置
 
