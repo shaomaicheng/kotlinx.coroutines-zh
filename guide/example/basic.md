@@ -32,3 +32,30 @@ World
 `Error: Kotlin: Suspend functions are only allowed to be called from a coroutine or another suspend function`
 
 这是因为 [delay](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/delay.html) 是一个特殊的正在暂停中的函数，不阻塞线程。但是一个 `suspends coroutine` 只能在协程中被使用。
+
+
+#### 连接阻塞和非阻塞的世界
+第一个例子在主函数的相同代码中混用了非阻塞的 `delay(...)` 和阻塞的 `Thread.sleep`， 很容易疑惑，让我们清晰的使用 [runBlocking](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/run-blocking.html) 独立阻塞和非阻塞世界
+```kotlin
+fun main(args: Array<String>) = runBlocking<Unit> { // start main coroutine
+    launch { // launch new coroutine
+        delay(1000L)
+        println("World!")
+    }
+    println("Hello,") // main coroutine continues while child is delayed
+    delay(2000L) // non-blocking delay for 2 seconds to keep JVM alive
+}
+```
+结果是一样的，但是这段代码只使用了非阻塞的 [delay](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/delay.html)
+
+`runBlocking {...}` 工作类似一个适配器，在这使用是开始一个顶层的主协程。 `runBlocking` 之外的常规代码阻塞， 直到协程内部的 `runBlocking` 活跃。
+
+这也是一个方法去给suspending的函数编写单元测试
+```kotlin
+class MyTest {
+    @Test
+    fun testMySuspendingFunction() = runBlocking<Unit> {
+        // here we can use suspending functions using any assertion style that we like
+    }
+}
+```
