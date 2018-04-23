@@ -35,7 +35,7 @@ World
 
 
 #### 连接阻塞和非阻塞的世界
-第一个例子在主函数的相同代码中混用了非阻塞的 `delay(...)` 和阻塞的 `Thread.sleep`， 很容易疑惑，让我们清晰的使用 [runBlocking](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/run-blocking.html) 独立阻塞和非阻塞世界
+第一个例子在主函数的相同代码中混用了非阻塞的 `delay(...)` 和阻塞的 `Thread.sleep`， 很容易疑惑，让我们使用 [runBlocking](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/run-blocking.html) 分离阻塞和非阻塞
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> { // start main coroutine
     launch { // launch new coroutine
