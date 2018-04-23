@@ -48,7 +48,7 @@ fun main(args: Array<String>) = runBlocking<Unit> { // start main coroutine
 ```
 结果是一样的，但是这段代码只使用了非阻塞的 [delay](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/delay.html)
 
-`runBlocking {...}` 工作类似一个适配器，在这使用是开始一个顶层的主协程。 `runBlocking` 之外的常规代码阻塞， 直到协程内部的 `runBlocking` 活跃。
+`runBlocking {...}` 在这使用是开始一个顶层的主协程的适配器。 `runBlocking` 之外的常规代码阻塞， 直到协程内部的 `runBlocking` 活跃。
 
 这也是一个方法去给suspending的函数编写单元测试
 ```kotlin
