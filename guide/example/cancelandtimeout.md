@@ -89,7 +89,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 
 ### 通过 finally 关闭资源
 
-取消一个 suspending 函数抛出了一个 CancellationException , 在取消的时候可以用统一的方法去处理。比如，函数在协程被取消时通常在 `try {...} finally {...}` 表达式 和 koltin `use` 中执行最终的行为
+取消一个 suspending 函数抛出了一个 CancellationException , 在取消的时候可以用统一的方法去处理。比如，函数在协程被取消时通常在 `try {...} finally {...}` 表达式 和 koltin `use` 中执行最终的行为
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
