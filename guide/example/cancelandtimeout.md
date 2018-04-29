@@ -171,7 +171,7 @@ Exception in thread "main" kotlinx.coroutines.experimental.TimeoutCancellationEx
 
 `TimeoutCancellationException` 是一个被 [withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html) 抛出的 [CancellationException]() 子类。我们之前没有在控制台上看到它打印堆栈，这是因为在一个取消的协程中，`CancellationException` 是一个正常的协程完成的原因。 但是在这个例子中，我们已经在主协程中使用了 `withTimeout`
 
-因为取消只是一个表达式，通常情况下所有的资源都会关闭，你可以在 `try {...} catch (e: TimeoutCancellationException) {...}` 代码块中使用timeout包装代码， 如果你需要针对任何超时类型做一些额外的特殊操作，或者使用类似 [withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html)的 [withTimeoutOrNull](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout-or-null.html) 函数，但是在超时的时候返回null，而不是抛出异常。
+因为取消只是一个表达式，通常情况下所有的资源都会关闭，你可以在 `try {...} catch (e: TimeoutCancellationException) {...}` 代码块中使用timeout包装代码， 如果你需要针对任何超时类型做一些额外的特殊操作，或者使用类似 [withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html)的 [withTimeoutOrNull](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout-or-null.html) 函数，但是在超时的时候返回null，而不是抛出异常。
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
