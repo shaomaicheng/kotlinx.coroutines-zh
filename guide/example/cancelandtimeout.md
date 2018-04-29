@@ -146,3 +146,50 @@ fun main(args: Array<String>) = runBlocking<Unit> {
     println("main: Now I can quit.")
 }
 ```
+
+### 超时
+在实践中， 我们有更明显的理由去取消一个协程的运行。因为它的执行超出了某个时间。虽然您可用手动跟踪相应的任务的引用，并启用一个单独的协程在延迟后取消跟踪。但是可以使用 [withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html)函数来执行此操作。看接下来的例子：
+
+```kotlin
+fun main(args: Array<String>) = runBlocking<Unit> {
+    withTimeout(1300L) {
+        repeat(1000) { i ->
+            println("I'm sleeping $i ...")
+            delay(500L)
+        }
+    }
+}
+```
+
+它产生以下输出：
+```
+I'm sleeping 0 ...
+I'm sleeping 1 ...
+I'm sleeping 2 ...
+Exception in thread "main" kotlinx.coroutines.experimental.TimeoutCancellationException: Timed out waiting for 1300 MILLISECONDS
+```
+
+`TimeoutCancellationException` 是一个被 [withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html) 抛出的 [CancellationException]() 子类。我们之前没有在控制台上看到它打印堆栈，这是因为在一个取消的协程中，`CancellationException` 是一个正常的协程完成的原因。 但是在这个例子中，我们已经在主协程中使用了 `withTimeout`
+
+因为取消只是一个表达式，通常情况下所有的资源都会关闭，你可以在 `try {...} catch (e: TimeoutCancellationException) {...}` 代码块中使用timeout包装代码， 如果你需要针对任何超时类型做一些额外的特殊操作，或者使用类似 [withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html)的 [withTimeoutOrNull](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout-or-null.html) 函数，但是在超时的时候返回null，而不是抛出异常。
+
+```kotlin
+fun main(args: Array<String>) = runBlocking<Unit> {
+    val result = withTimeoutOrNull(1300L) {
+        repeat(1000) { i ->
+            println("I'm sleeping $i ...")
+            delay(500L)
+        }
+        "Done" // will get cancelled before it produces this result
+    }
+    println("Result is $result")
+}
+```
+
+这段代码运行的时候，将不再会有一个异常：
+```
+I'm sleeping 0 ...
+I'm sleeping 1 ...
+I'm sleeping 2 ...
+Result is null
+```
