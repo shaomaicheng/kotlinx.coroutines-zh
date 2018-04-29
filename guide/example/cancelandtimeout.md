@@ -58,7 +58,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 }
 ```
 
-运行它你会发现它在取消后继续打印 "I'm sleeping" 直到任务完成了 5 次迭代。
+运行它你会发现它在取消后继续打印 "I'm sleeping" 直到任务完成了 5 次迭代。
 
 ### 使计算的代码可以退出
 
