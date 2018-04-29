@@ -122,7 +122,7 @@ main: Now I can quit.
 
 ### 运行不可取消的代码块
 
-任何在前面例子的 finally 块中使用 suspending 函数都会导致 CancellationException，因为运行这个代码的协程被取消。通常情况下这都不是问题，因为所有的关闭操作（关闭文件、取消任务或者关闭任何类型的通信通道）都是非阻塞的，并且不涉及任何 suspending 函数。但是，在极少数情况下，如果需要在取消的协程中暂停，可以使用 [run]() 函数和  NonCancellable 上下文 将相应的代码封装在 `run(NonCancellable) {...}` 中， 就像下面的实例一样：
+任何在前面例子的 finally 块中使用 suspending 函数都会导致 CancellationException，因为运行这个代码的协程被取消。通常情况下这都不是问题，因为所有的关闭操作（关闭文件、取消任务或者关闭任何类型的通信通道）都是非阻塞的，并且不涉及任何 suspending 函数。但是，在极少数情况下，如果需要在取消的协程中暂停，可以使用 [run]() 函数和  NonCancellable 上下文 将相应的代码封装在 `run(NonCancellable) {...}` 中， 就像下面的实例一样：
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
