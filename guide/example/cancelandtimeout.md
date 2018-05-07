@@ -89,7 +89,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 
 ### 通过 finally 关闭资源
 
-取消一个suspending函数抛出了一个 CancellationException , 在取消的时候可以用统一的方法去处理。比如，函数在协程被取消时通常在 `try {...} finally {...}` 表达式 和 koltin `use` 中执行最终的行为
+取消一个suspending函数抛出了一个 CancellationException , 在取消的时候可以用统一的方法去处理。比如，函数在协程被取消时通常在 `try {...} finally {...}` 表达式 和 koltin `use` 中执行最终的行为
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
@@ -148,7 +148,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 ```
 
 ### 超时
-在实践中， 我们有更明显的理由去取消一个协程的运行。因为它的执行超出了某个时间。虽然您可用手动跟踪相应的任务的引用，并启用一个单独的协程在延迟后取消跟踪。但是可以使用[withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html)函数来执行此操作。看接下来的例子：
+在实践中， 我们有更明显的理由去取消一个协程的运行。因为它的执行超出了某个时间。虽然您可用手动跟踪相应的任务的引用，并启用一个单独的协程在延迟后取消跟踪。但是可以使用[withTimeout](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/with-timeout.html)函数来执行此操作。看接下来的例子：
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
