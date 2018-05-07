@@ -65,8 +65,8 @@ Completed in 1017 ms
 
 这是两倍的速度， 因为我们同时执行 2 个协程程序。请注意， 协程的并发总是显示的。
 
-### 惰性启动async
-在使用 `async` 的时候有一个惰性选项，将 [CoroutineStart.LAZY](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-start/-l-a-z-y.html) 作为 `start` 的参数值。它只在结果需要被[await](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-deferred/await.html) 或者一个 [start](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/start.html) 函数被调用的时候启动一个协程。运行下例代码，和以前不同的是，现在只通过这个选项。
+### 惰性启动async
+在使用 `async` 的时候有一个惰性选项，将 [CoroutineStart.LAZY](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-start/-l-a-z-y.html) 作为 `start` 的参数值。它只在结果需要被[await](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-deferred/await.html) 或者一个 [start](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/start.html) 函数被调用的时候启动一个协程。运行下例代码，和以前不同的是，现在只通过这个选项。
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
