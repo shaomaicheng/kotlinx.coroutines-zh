@@ -20,7 +20,7 @@ suspend fun doSomethingUsefulTwo(): Int {
 
 如果需要依次调用它们，我们应该如何做呢？-- 首先运行 `doSomethingUsefulOne`  如何运行 `doSomethingUsefulTwo`，如何计算它们的总和？实际上如果我们通过第一个函数的结果来决定是否需要调用第二个函数或者决定如何调用它，我们会这样做。
 
-我们只是用正常的顺序去调用，因为协程中的代码和普通代码中的代码一样，默认情况下是顺序执行的。以下实例是通过衡量两个 suspending 函数所需要的总时间的演示：
+我们只是用正常的顺序去调用，因为协程中的代码和普通代码中的代码一样，默认情况下是顺序执行的。以下实例是通过衡量两个suspending 函数所需要的总时间的演示：
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
@@ -65,8 +65,8 @@ Completed in 1017 ms
 
 这是两倍的速度， 因为我们同时执行 2 个协程程序。请注意， 协程的并发总是显示的。
 
-### 惰性启动 async
-在使用 `async` 的时候有一个惰性选项，将 [CoroutineStart.LAZY](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-start/-l-a-z-y.html) 作为 `start` 的参数值。它只在结果需要被 [await](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-deferred/await.html) 或者一个 [start](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/start.html) 函数被调用的时候启动一个协程。运行下例代码，和以前不同的是，现在只通过这个选项。
+### 惰性启动async
+在使用 `async` 的时候有一个惰性选项，将 [CoroutineStart.LAZY](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-start/-l-a-z-y.html) 作为 `start` 的参数值。它只在结果需要被[await](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-deferred/await.html) 或者一个 [start](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/start.html) 函数被调用的时候启动一个协程。运行下例代码，和以前不同的是，现在只通过这个选项。
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
