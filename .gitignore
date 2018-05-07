@@ -3,5 +3,10 @@
 
 /build
 
+.settings/
 
+/bin
 /out
+
+.classpath
+.project
