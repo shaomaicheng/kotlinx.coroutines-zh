@@ -1,6 +1,6 @@
-### 组合 supending 函数
+### 组合 suspending 函数
 
-本节涵盖了组合 supending 函数的几种方法
+本节涵盖了组合 suspending 函数的几种方法
 
 ### 按默认顺序
 
