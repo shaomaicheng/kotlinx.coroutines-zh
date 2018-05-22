@@ -49,7 +49,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 
 [Unconfined](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-unconfined/index.html) 协程调度器在调用者线程中启动，但是只到第一个暂停点。暂停后在由被调用的暂停功能完全确定的线程中恢复。当协程没有耗费 CPU 时间或者没有更新任何局限在特定线程的共享数据（例如 UI），无限制的调度器是合适的。
 
-另一方面，[coroutineContext](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-scope/coroutine-context.html) 属性在通过 [CoroutineScope](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-scope/index.html) 接口在任何协程块中使用，是对这个特定协程的上下文的引用。通过这个方法，一个父上下文可以被继承。[runBlocking](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/run-blocking.html) 协程默认的调度器，尤其是仅限于调用者线程的，所以继承它具有将执行限制在具有可预测的FIFO调度的该线程的效果。
+另一方面，[coroutineContext](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-scope/coroutine-context.html) 属性在通过 [CoroutineScope](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-scope/index.html) 接口在任何协程块中使用，是对这个特定协程的上下文的引用。通过这个方法，一个父上下文可以被继承。[runBlocking](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/run-blocking.html) 协程默认的调度器，尤其是仅限于调用者线程的，所以继承它具有将执行限制在具有可预测的FIFO调度的该线程的效果。
 
 ```kotlin
 fun main(args: Array<String>) = runBlocking<Unit> {
@@ -83,7 +83,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 
 ### 调试协程和线程
 
-在使用 [Unconfined](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-unconfined/index.html) 调度器 或者 使用默认的多线程调度器的时候，协程是可以暂停并且在另一个线程恢复的。即使在单线程的调度器中，也是非常不容易去判断协程什么时候，在什么地方，正在做什么事情。一个公共的多线程下的调试方法就是在每一句log的代码里面去打印当前的线程名称。这个功能在日志框架中是普遍支持的。 当使用协程的时候，单独的线程名是不会给出很多上下文。所以 `kotlinx.coroutines` 包括了调试设备让调试协程更加容易。
+在使用 [Unconfined](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-unconfined/index.html) 调度器 或者 使用默认的多线程调度器的时候，协程是可以暂停并且在另一个线程恢复的。即使在单线程的调度器中，也是非常不容易去判断协程什么时候，在什么地方，正在做什么事情。一个公共的多线程下的调试方法就是在每一句log的代码里面去打印当前的线程名称。这个功能在日志框架中是普遍支持的。 当使用协程的时候，单独的线程名是不会给出很多上下文。所以 `kotlinx.coroutines` 包括了调试设备让调试协程更加容易。
 
 使用 `-Dkotlinx.coroutines.debug` jvm参数运行如下代码：
 ```kotlin
@@ -201,7 +201,7 @@ job1: I am not affected by cancellation of the request
 main: Who has survived request cancellation?
 ```
 
-### 合并上下文
+### 合并上下文
 协程上下文可以使用`+`操作符合并。右边的上下文取代左边上下文的条目。举个例子，父协程的任务可以被继承，而他的调度员被取代。
 
 ```kotlin
