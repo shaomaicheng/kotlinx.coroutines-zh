@@ -39,7 +39,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 'coroutineContext': I'm working in thread main
 ```
 
-我们在前几届s使用的默认调度器由 [DefaultDispatcher](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-default-dispatcher.html) 代表，这个和当前实现的 [CommonPool](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-common-pool/index.html) 相同，所以 `launch {...}` 和 `launch(DefaultDispather) {...}` 一样，和 `launch(CommonPool) {...}` 也一样。
+我们在前几节使用的默认调度器由 [DefaultDispatcher](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-default-dispatcher.html)代表，这个和当前实现的 [CommonPool](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-common-pool/index.html) 相同，所以 `launch {...}` 和 `launch(DefaultDispather) {...}` 一样，和 `launch(CommonPool) {...}` 也一样。
 
 父 [coroutineContext](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-scope/coroutine-context.html) 和 [Unconfined](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-unconfined/index.html) 的区别会在稍后展示。
 
@@ -112,7 +112,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 
 你可以看到 `log` 功能在方括号中打印线程的名称。那是 `main` 线程。当时当前运行的协程的识别码附加到了它上面。在打开调试模式时，此标识符将连续分配给所有创建的协同程序。
 
-您可以在 [newCoroutineContext](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/new-coroutine-context.html)的文档上阅读更多关于调试设备的内容。
+您可以在 [newCoroutineContext](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/new-coroutine-context.html)的文档上阅读更多关于调试设备的内容。
 
 ### 在线程之间跳转
 
