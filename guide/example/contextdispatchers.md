@@ -228,3 +228,99 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 job: I am a child of the request coroutine, but with a different dispatcher
 main: Who has survived request cancellation?
 ```
+
+
+### 父协程的职责
+一个父协程总是等待它所有的子协程完成。父协程不需要显式的跟踪子协程的启动，并且它不需要去使用子协程的 [Job.join](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/join.html) 等待它们。
+
+```kotlin
+fun main(args: Array<String>) = runBlocking<Unit> {
+    // launch a coroutine to process some kind of incoming request
+    val request = launch {
+        repeat(3) { i -> // launch a few children jobs
+            launch(coroutineContext)  {
+                delay((i + 1) * 200L) // variable delay 200ms, 400ms, 600ms
+                println("Coroutine $i is done")
+            }
+        }
+        println("request: I'm done and I don't explicitly join my children that are still active")
+    }
+    request.join() // wait for completion of the request, including all its children
+    println("Now processing of the request is complete")
+}
+```
+
+结果如下：
+```
+request: I'm done and I don't explicitly join my children that are still active
+Coroutine 0 is done
+Coroutine 1 is done
+Coroutine 2 is done
+Now processing of the request is complete
+```
+
+### 命名协程用以调试
+当 log 经常使用在 coroutine 的时候，自动分配一个id是非常棒的主意。你只需要关联来自于同一个协程的日志记录。然而，当协程和特定请求的处理或者和执行一些特殊的后台任务相关联的时候，最好拥有一个显式的名字以确保调试的目的明确。 [CoroutineName](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-coroutine-name/index.html) 上下文元素作为一个线程的名字提供相同的功能。当 [调试模式](https://github.com/Kotlin/kotlinx.coroutines/blob/master/coroutines-guide.md#debugging-coroutines-and-threads) 打开的时候，他会显示在执行此协程的线程名字中。
+
+下面的例子演示了这一概念：
+
+```kotlin
+fun log(msg: String) = println("[${Thread.currentThread().name}] $msg")
+
+fun main(args: Array<String>) = runBlocking(CoroutineName("main")) {
+    log("Started main coroutine")
+    // run two background value computations
+    val v1 = async(CoroutineName("v1coroutine")) {
+        delay(500)
+        log("Computing v1")
+        252
+    }
+    val v2 = async(CoroutineName("v2coroutine")) {
+        delay(1000)
+        log("Computing v2")
+        6
+    }
+    log("The answer for v1 / v2 = ${v1.await() / v2.await()}")
+}
+```
+使用 `-Dkotlinx.coroutines.debug` JVM 选项显示结果:
+
+```
+[main @main#1] Started main coroutine
+[ForkJoinPool.commonPool-worker-1 @v1coroutine#2] Computing v1
+[ForkJoinPool.commonPool-worker-2 @v2coroutine#3] Computing v2
+[main @main#1] The answer for v1 / v2 = 42
+```
+### 通过显式的Job取消
+
+让我们把我们关于上下文、子协程和任务的知识放下，假设我们的应用有一个生命周期相关的对象，但是这个对象并不是一个协程。比如，我们写一个 Android 应用， 在 Activity 的Context 启动各种协程, 用以执行请求和获取数据的异步操作，执行动画等待。当 Activity 销毁的时候，所有的协程都应该被取消。这可以避免内存泄露。
+
+我们可以通过创建一个和 Activity 生命周期关联的 [Job](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/index.html) 实例来管理我们协程的生命周期。一个协程实例使用下面实例的 [Job()](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job.html) 工厂函数生成。方便起见，我们可以写 `launch(coroutineContext, parent = job)` 去显式的指明一个父任务正在被使用的事实，而不是使用 `launch(coroutineContext + job)` 表达式。
+
+```kotlin
+fun main(args: Array<String>) = runBlocking<Unit> {
+    val job = Job() // create a job object to manage our lifecycle
+    // now launch ten coroutines for a demo, each working for a different time
+    val coroutines = List(10) { i ->
+        // they are all children of our job object
+        launch(coroutineContext, parent = job) { // we use the context of main runBlocking thread, but with our parent job
+            delay((i + 1) * 200L) // variable delay 200ms, 400ms, ... etc
+            println("Coroutine $i is done")
+        }
+    }
+    println("Launched ${coroutines.size} coroutines")
+    delay(500L) // delay for half a second
+    println("Cancelling the job!")
+    job.cancelAndJoin() // cancel all our coroutines and wait for all of them to complete
+}
+```
+
+例子输出如下：
+```
+Launched 10 coroutines
+Coroutine 0 is done
+Coroutine 1 is done
+Cancelling the job!
+```
+
+正如你所见，只有最先的三个协程打印了消息， 其他的协程都被 `job.cancelAndJoin()` 单一的调用取消。所以在我们假设的 Android 程序中，我们所需要做的就是在 Activity 创建的时候，创建一个父 job 对象，用它来生成子协程，当 Activity 销毁的时候，取消它。在 Android 的生命周期中，我们不能调用它们的 `join` 函数，因为它是同步的，但是这个加入的能力是在建立后端服务确保有限的资源使用的时候比较有用。
