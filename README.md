@@ -18,7 +18,13 @@ kotlinx.coroutines官方文档中文版本
 
 #### [协程上下文和调度器](./guide/example/contextdispatchers.md)
 
+### [Channels](./guide/example/channel.md)
+
 
 ## 个人小结
 
-阅读了几次 Kotlin -- Guide to kotlinx.coroutines by example的协程官方文档。这次顺手把前面3节的基础部分翻译了下来。在过程中对某些语句进行了推敲，感觉自己的英文文档阅读能力有了不少提升，同时也希望能帮助到其他人。但是自己的英文水平也毕竟有限，所以也希望能有其他同学一起参与后面章节的翻译。
+阅读了几次 Kotlin -- Guide to kotlinx.coroutines by example的协程官方文档。这次顺手把前面5节翻译了下来。在过程中对某些语句进行了推敲，感觉自己的英文文档阅读能力有了不少提升，同时也希望能帮助到其他人。但是自己的英文水平也毕竟有限，所以也希望能有其他同学一起参与后面章节的翻译。
+
+针对这个文档的内容，我添加了一份xmind供大家参考。如果有错误，欢迎提出来纠正和讨论。
+
+![]()
