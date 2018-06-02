@@ -18,7 +18,7 @@ kotlinx.coroutines官方文档中文版本
 
 #### [协程上下文和调度器](./guide/example/contextdispatchers.md)
 
-### [Channels](./guide/example/channel.md)
+#### [Channels](./guide/example/channel.md)
 
 
 ## 个人小结
