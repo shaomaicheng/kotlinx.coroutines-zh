@@ -27,4 +27,6 @@ kotlinx.coroutines官方文档中文版本
 
 针对这个文档的内容，我添加了一份xmind供大家参考。如果有错误，欢迎提出来纠正和讨论。
 
-![]()
+
+
+![](https://github.com/shaomaicheng/kotlinx.coroutines-zh/blob/master/guide/imgs/coroutine.jpg?raw=true)
